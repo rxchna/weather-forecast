@@ -12,9 +12,12 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
+import WaterDropTwoToneIcon from '@mui/icons-material/WaterDropTwoTone';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import StormIcon from '@mui/icons-material/Storm';
 import WindGraph from '../components/WindGraph/index';
 
 export default function Home() {
@@ -158,6 +161,7 @@ export default function Home() {
     const formatForecastMinTemp = (minTemp: any) => {
         return `${Math.floor(minTemp)}\u00B0`;
     };
+
     // Function to format date on forecast section
     const formatForecastDate = (dateTimeString: any) => {
         const date = new Date(`${dateTimeString}T00:00:00`); // date-fns library to handle date data parsing
@@ -178,6 +182,11 @@ export default function Home() {
             formattedDayOfWeek
         };
     }
+
+    // Function to round dewpoint add Celcius symbol
+    const formatDewPoint = (val: any) => {
+        return `${Math.round(val)}\u00B0`;
+    };
 
     // Initial render of component
     useEffect(() => {
@@ -252,7 +261,34 @@ export default function Home() {
 
     // Function to return capitalized string
     const capitalizeString = (str: string) => {
-        return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+        return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+    };
+
+    // Function to return visibility in km
+    const formatVisbilityKm = (meters: number) => {
+        return meters / 1000;
+    };
+
+    // Function to return additional information about current visibility
+    const addVisibilityInfo = (visibility: number) => {
+        if (visibility >= 6000) {
+            return "Good visibility under clear conditions";
+        } else if (visibility < 4000) {
+            return "Haze is affecting visibility";
+        } else {
+            return "Moderate visibility due to haze or light fog";
+        }
+    };
+
+    // Function to return additional information about current value for pressure
+    const addPressureInfo = (pressure: number) => {
+        if (pressure > 1014) {
+            return "High pressure, stable weather conditions";
+        } else if (pressure < 1000) {
+            return "Unsettled weather and possible precipitation";
+        } else {
+            return "Normal atmospheric pressure";
+        }
     };
 
     // Get formatted current time
@@ -331,14 +367,70 @@ export default function Home() {
                             }
                         </div>
                     </div>
-                    <div className={styles.uv_index_datapoint}>UV Index</div>
-                    <div className={styles.sunrise_sunset_data_point}>Sunrise & Sunset</div>
-                    <div className={styles.humidity_data_point}>Humidity</div>
-                    <div className={styles.visibility_data_point}>Visibility</div>
-                    <div className={styles.pressure_data_point}>Pressure</div>
+                    <div className={styles.uv_index_datapoint}>
+                        UV Index
+                    </div>
+                    <div className={styles.sunrise_sunset_data_point}>
+                        Sunrise & Sunset
+                    </div>
+                    {/* Humidity DataPoint */}
+                    <div className={styles.humidity_data_point}>
+                        <div className={styles.secondary_dp_header}>Humidity</div>
+                        <div className={styles.secondary_dp_value}>
+                            <span className={styles.large_font}>
+                                {weatherData?.current?.humidity && (
+                                    weatherData.current.humidity
+                                )}
+                            </span> %
+                        </div>
+                        <div className={styles.secondary_dp_icon}>
+                            <WaterDropTwoToneIcon />
+                        </div>
+                        <div className={styles.secondary_dp_add_desc}>
+                            The dew point is {weatherData?.current?.dew_point && (formatDewPoint(weatherData.current.dew_point))} right now
+                        </div>
+                    </div>
+                    {/* Visibility DataPoint */}
+                    <div className={styles.visibility_data_point}>
+                        <div className={styles.secondary_dp_header}>Visibility</div>
+                        <div className={styles.secondary_dp_value}>
+                            <span className={styles.large_font}>
+                                {weatherData?.current?.visibility && (
+                                    formatVisbilityKm(weatherData.current.visibility)
+                                )}
+                            </span> km
+                        </div>
+                        <div className={styles.secondary_dp_icon}>
+                            <VisibilityTwoToneIcon />
+                        </div>
+                        <div className={styles.secondary_dp_add_desc}>
+                            {weatherData?.current?.visibility && (
+                                addVisibilityInfo(weatherData.current.visibility)
+                            )}
+                        </div>
+                    </div>
+                    {/* Pressure DataPoint */}
+                    <div className={styles.pressure_data_point}>
+                    <div className={styles.secondary_dp_header}>Pressure</div>
+                        <div className={styles.secondary_dp_value}>
+                            <span className={styles.large_font}>
+                                {weatherData?.current?.pressure && (
+                                    weatherData.current.pressure
+                                )}
+                            </span> hPa
+                        </div>
+                        <div className={styles.secondary_dp_icon}>
+                            <StormIcon />
+                        </div>
+                        <div className={styles.secondary_dp_add_desc}>
+                            {weatherData?.current?.pressure && (
+                                addPressureInfo(weatherData.current.pressure)
+                            )}
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.secondary_header}>6-days Forecast</div>
-                <div className={styles.secondary_header}>Some map location</div>
+                <div className={styles.secondary_header}>Weather Condition Map</div>
                 <div className={styles.forecast_six_days}>
                     {/* Iterate over each entry */}
                     {forecastTemperatureData.map((forecast, index) => (

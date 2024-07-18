@@ -52,8 +52,7 @@ const WindGraph: React.FC<WindGraphProps> = ({ windData }) => {
             y: {
                 beginAtZero: false,
                 title: {
-                    display: true,
-                    text: 'Speed (m/s)'
+                    display: false
                 }
             },
             x: {
