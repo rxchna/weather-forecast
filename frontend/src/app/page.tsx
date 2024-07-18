@@ -21,6 +21,9 @@ export default function Home() {
 
     const [city, setCity] = useState("Waterloo");
     const [countryCode, setCountryCode] = useState("CA");
+    const [latitudeCoordinate, setLatitudeCoordinate] = useState<number>(0);
+    const [longitudeCoordinate, setLongitudeCoordinate] = useState<number>(0);
+    const [location, setLocation] = useState("");
     const [weatherData, setWeatherData] = useState<any>(null);
     const [forecastTemperatureData, setForecastTemperatureData] = useState<any[]>([]);
     const [forecastWindData, setForecastWindData] = useState<any[]>([]);
@@ -28,15 +31,52 @@ export default function Home() {
     const weatherIconSize4x = "4x";
     const weatherIconSize2x = "2x";
 
+    interface WeatherIconProps {
+        iconCode: string;
+        iconSize?: string;
+    }
+
+    const getLatLonCoordinates = async () => {
+        // Call API to fetch location latitude/longitude coordinates
+        try {
+            if(city?.length && countryCode?.length) {
+                const response = await axios.get(API_BASE_URL + '/api/locationLatLonCoordinates', {
+                    params: {
+                        city: city,
+                        countryCode: countryCode
+                    }
+                });
+
+                if(response) {
+                    const {lon, lat, name, country} = response.data[0];
+                    setLocation(`${name}, ${country}`); // Feature todo: auto suggest from seach bar
+
+                    // Set coordinates state
+                    setLongitudeCoordinate(lon);
+                    setLatitudeCoordinate(lat);
+
+                    return { lon, lat };
+                }
+                else {
+                    console.log("#rp: No matching city and country found")
+                }
+            }
+        } catch (error) {
+            console.log(`Error fetching location coordinates: ${error}`);
+            throw error;
+        }
+    }
+
     // Get current weather data
     const getWeatherData = async () => {
         // Call route in backend, send variables
         try {
+            console.log("latitude/longitude: ", latitudeCoordinate, " ", longitudeCoordinate);
             if(city?.length && countryCode?.length) {
                 const response = await axios.get(API_BASE_URL + '/api/weather', {
                     params: {
-                        city: city,
-                        countryCode: countryCode
+                        latitude: latitudeCoordinate,
+                        longitude: longitudeCoordinate
                     }
                 });
                 setWeatherData(response.data);
@@ -53,7 +93,6 @@ export default function Home() {
 
     // Get forecasted weather data
     const getForecastWeatherData = async () => {
-        // Call route in backend, send variables
         try {
             if(city?.length && countryCode?.length) {
                 const response = await axios.get(API_BASE_URL + '/api/forecastWeather', {
@@ -62,8 +101,8 @@ export default function Home() {
                         countryCode: countryCode
                     }
                 });
-                
-                console.log(response.data.message);
+                setForecastTemperatureData(response.data);
+                console.log("Forecast weather data: ", response.data);
             }
             else {
                 console.log("City or country code is empty.");
@@ -75,29 +114,17 @@ export default function Home() {
     };
 
     // Get forecasted temperature data
-    const getForecastTemperatureData = async () => {
-        try {
-            if(city?.length && countryCode?.length) {
-                const response = await axios.get(API_BASE_URL + '/api/forecast6DayMinMaxTemperatures');
-                setForecastTemperatureData(response.data);
-                console.log("Temperature response rachna : ", response.data);
-            }
-            else {
-                console.log("City or country code is empty.");
-            }
-        } catch (error) {
-            console.log(`Error fetching forecast temperature data: ${error}`);
-            throw error;
-        }
-    };
-
-    // Get forecasted temperature data
     const getForecastWindData = async () => {
         try {
             if(city?.length && countryCode?.length) {
-                const response = await axios.get(API_BASE_URL + '/api/forecastWindDatapoint');
+                const response = await axios.get(API_BASE_URL + '/api/forecastWindDatapoint', {
+                    params: {
+                        latitude: latitudeCoordinate,
+                        longitude: longitudeCoordinate
+                    }
+                });
                 setForecastWindData(response.data);
-                console.log("Wind response: ", response.data); // getting response now need to display those values on graph
+                console.log("Wind response: ", response.data);
             }
             else {
                 console.log("City or country code is empty.");
@@ -133,7 +160,7 @@ export default function Home() {
     };
     // Function to format date on forecast section
     const formatForecastDate = (dateTimeString: any) => {
-        const date = new Date(dateTimeString);
+        const date = new Date(`${dateTimeString}T00:00:00`); // date-fns library to handle date data parsing
     
         // Get month and day
         const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
@@ -152,22 +179,31 @@ export default function Home() {
         };
     }
 
+    // Initial render of component
     useEffect(() => {
-        getWeatherData();
-        getForecastWeatherData().then( () => {
-            getForecastTemperatureData();
-            getForecastWindData();
-        });
+        getLatLonCoordinates();
     }, []);
 
+    // Runs when latitudeCoordinate or longitudeCoordinate state changes.
+    useEffect(() => {
+        // Retrieve weather data
+        getWeatherData();
+
+        // Retrieve forecast data
+        getForecastWeatherData();
+
+        // Retrieve wind daily forecast data
+        getForecastWindData();
+    }, [latitudeCoordinate, longitudeCoordinate]);
+
     // Function to retrieve weather icon using OpenWeather icons
-    const WeatherIcon = ({ iconCode, iconSize }) => {
+    const WeatherIcon: React.FC<WeatherIconProps> = ({ iconCode, iconSize }) => {
         const iconUrl = `http://openweathermap.org/img/wn/${iconCode}${iconSize ? `@${iconSize}` : ''}.png`;
         return <img src={iconUrl} alt="Weather icon" />;
     };
 
     // Function to display custom icon
-    const customIcon = (iconCode) => {
+    const customIcon = (iconCode: string) => {
         let iconComponent = null;
 
         // Display different icons on different iconCode
@@ -215,8 +251,8 @@ export default function Home() {
     };
 
     // Function to return capitalized string
-    const capitalizeString = (desc) => {
-        return desc.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+    const capitalizeString = (str: string) => {
+        return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
     };
 
     // Get formatted current time
@@ -235,63 +271,64 @@ export default function Home() {
             <div className={styles.body_header}>
                 <h1>
                     <LocationOnIcon className={styles.location_icon} />
-                    {weatherData && <div className={styles.location_name}>{weatherData.name}, {weatherData.sys.country}</div>}
+                    {location && (
+                        <div className={styles.location_name}>
+                            {location}
+                        </div>
+                    )}
                 </h1>
                 <div className={styles.search_bar}>
                     <input type="search" placeholder="eg. Toronto, CA" onChange={(e) => updatePlace(e)}/>
                     <button onClick={() => {
-                        getWeatherData();
-                        getForecastWeatherData().then( () => {
-                            getForecastTemperatureData();
-                            getForecastWindData();
-                        });
+                        getLatLonCoordinates();
                     }}><SearchIcon className={styles.search_icon}/></button>
                 </div>
             </div>
             <div className={styles.main_weather_data}>
                 <div className={styles.current_location}>
                     <div className={styles.weather_icon}>
-                        {weatherData?.weather[0]?.icon && (
-                            <WeatherIcon iconCode={weatherData.weather[0].icon} iconSize={weatherIconSize4x} />
+                        {weatherData?.current.weather[0]?.icon && (
+                            <WeatherIcon iconCode={weatherData.current.weather[0].icon} iconSize={weatherIconSize4x} />
                         )}
                     </div>
                     <h1 className={styles.temperature_style}>
-                        {weatherData?.main?.temp && (
-                            formatTemperature(weatherData.main.temp)
+                        {weatherData?.current?.temp && (
+                            formatTemperature(weatherData.current.temp)
                         )}
                     </h1>
                     <div className={styles.weather_custom_icon}>
-                        {weatherData?.weather[0]?.icon && (
-                            customIcon(weatherData.weather[0].icon)
+                        {weatherData?.current.weather[0]?.icon && (
+                            customIcon(weatherData.current.weather[0].icon)
                         )}
                     </div>
                     <div className={styles.weather_desc}>
-                        {weatherData?.weather[0]?.description && (
-                            capitalizeString(weatherData.weather[0].description)
+                        {weatherData?.current?.weather[0]?.description && (
+                            capitalizeString(weatherData.current.weather[0].description)
                         )}
                     </div>
                     <hr />
                     <CalendarMonthOutlinedIcon />
                     <div>{currentTime}</div>
                     <DeviceThermostatSharpIcon />
-                    <div>Feels Like {weatherData?.main?.feels_like && (
-                        formatTemperature(weatherData.main.feels_like)
+                    <div>Feels Like {weatherData?.current?.feels_like && (
+                        formatTemperature(weatherData.current.feels_like)
                     )}</div>
                 </div>
                 <div className={styles.meteorological_data_points}>
                     <div className={styles.data_points_header}>Today's Highlight</div>
                     <div className={styles.wind_data_point}>
                         {/* Wind Graph */}
-                        {/* todo: check if winddata is not null */}
                         <div>Wind Status</div>
                         <h1>
-                            {weatherData?.wind?.speed && (
-                                weatherData.wind.speed
+                            {weatherData?.current?.wind_speed && (
+                                weatherData.current.wind_speed
                             )}
                             <span className={styles.wind_unit}> m/s</span>
                         </h1>
                         <div className={styles.wind_graph}>
-                            <WindGraph windData={forecastWindData} />
+                            {forecastWindData && 
+                                <WindGraph windData={forecastWindData} />
+                            }
                         </div>
                     </div>
                     <div className={styles.uv_index_datapoint}>UV Index</div>

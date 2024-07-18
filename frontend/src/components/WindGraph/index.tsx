@@ -1,4 +1,4 @@
-// import React from "react";
+import React from "react";
 import { Line } from 'react-chartjs-2';
 import { WindEntry, WindGraphProps } from '@/types/windData';
 import { 
@@ -23,24 +23,16 @@ ChartJS.register(
 );
 
 const WindGraph: React.FC<WindGraphProps> = ({ windData }) => {
-    // const times = windData.map(entry => {
-    //     // Format time
-    //     const hour = parseInt(entry.time.split(':')[0], 10);
-    //     return hour;
-    // });
-    const times = windData.map(entry => {
-        // Format time
-        const timeParts = entry.time.split(':'); // Split by ":" to get hours, minutes, and seconds
-        const formattedTime = `${timeParts[0]}:${timeParts[1]}`;
-        return formattedTime;
-    });
-    const windSpeeds = windData.map((entry:any) => entry.wind.speed);
+    const windSpeeds = windData.slice();
+
+    // Generate x-axis labels from 0 to 23
+    const hours = Array.from({ length: 24 }, (_, i) => i);
 
     const windGraphData = {
-        labels: times,
-        datasets : [
+        labels: hours,
+        datasets: [
             {
-                label: '',
+                label: 'Speed (m/s)',
                 data: windSpeeds,
                 borderColor: '#A3DCEB',
                 backgroundColor: 'rgba(42, 206, 251, 0.1)',
@@ -65,9 +57,7 @@ const WindGraph: React.FC<WindGraphProps> = ({ windData }) => {
                 }
             },
             x: {
-                title: {
-                    display: true
-                }
+                display: false
             }
         }
     }
