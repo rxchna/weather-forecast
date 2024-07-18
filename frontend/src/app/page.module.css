@@ -79,9 +79,10 @@
 .meteorological_data_points {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1em 75% auto;
+    grid-template-rows: 0.8em 70% auto;
     column-gap: 1.3em;
-    padding: 1.3em;
+    /* row-gap: ; */
+    padding: 1em 1.8em;
 }
 
 .secondary_header {
@@ -126,7 +127,7 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 20% auto;
     align-items: center;
-    row-gap: 1em;
+    row-gap: 0.3em;
 }
 
 .uv_index_datapoint {
@@ -136,25 +137,57 @@
     background-color: rgb(16, 22, 29, 0.8);
 }
 .wind_data_point, .uv_index_datapoint, .sunrise_sunset_data_point {
-    margin-bottom: 1em;
+    margin-bottom: 0.7em;
     margin-top: 1em;
-    padding: 1em;
+    padding: 1em 1.5em;
     border-radius: 1em;
 }
 
 .humidity_data_point, .visibility_data_point, .pressure_data_point {
-    padding: 1em;
+    padding: 1em 1.5em;
     border-radius: 1em;
+    font-size: 1em;
 }
 
 .humidity_data_point {
     background: linear-gradient(to right, rgb(16, 22, 29, 0.9), rgba(25, 38, 48));
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 20% 1.5em auto;
 }
+.secondary_dp_header {
+    grid-column: 1 / span 2;
+}
+.secondary_dp_value {
+    grid-row: 2 / span 2;
+    align-self: end;
+}
+.secondary_dp_add_desc {
+    font-size: 0.8em;
+    align-self: start;
+    color: #ccc;
+    /* margin-top: 0.5em; */
+    /* letter-spacing: 1px; */
+    line-height: 150%;
+}
+.secondary_dp_icon {
+    align-self: end;
+}
+.large_font {
+    font-size: 2.5em;
+}
+
 .visibility_data_point {
     background-color: #17222B;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 20% 1.5em auto;
 }
 .pressure_data_point {
     background: linear-gradient(to right, rgba(25, 38, 48), rgb(16, 22, 29, 0.9));
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 20% 1.5em auto;
 }
 
 .weather_icon, .temperature_style, .current_location hr {
@@ -179,8 +212,6 @@
     border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     margin: 10px 0;
-    /* padding-top: 1em; */
-    /* align-self: end; */
 }
 
 .forecast_day {
@@ -214,9 +245,6 @@
     font-size: 2em;
 }
 .wind_graph {
-    /* margin-top: 1em; */
-    /* height: 70%; */
-    /* width: 100%; */
     grid-column: 1 / span 2;
     justify-self: center;
     width: 100%;
