@@ -19,6 +19,7 @@ import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import StormIcon from '@mui/icons-material/Storm';
 import WindGraph from '../components/WindGraph/index';
+import MapComponent from "@/components/MapComponent";
 
 export default function Home() {
 
@@ -203,6 +204,10 @@ export default function Home() {
 
         // Retrieve wind daily forecast data
         getForecastWindData();
+
+        // Initialize map component
+        // todo
+
     }, [latitudeCoordinate, longitudeCoordinate]);
 
     // Function to retrieve weather icon using OpenWeather icons
@@ -467,11 +472,15 @@ export default function Home() {
                     ))}
                 </div>
                 <div className={styles.map_section}>
-                    Map Location
-                    {/* <h3>Weather Dashboard</h3>
-                    {weatherData && (
-                        <pre>{JSON.stringify(weatherData, null, 2)}</pre>
-                    )} */}
+                    {(weatherData?.current?.temp && latitudeCoordinate != 0 && longitudeCoordinate != 0 && weatherData?.current?.weather[0]?.icon) ? (
+                        <MapComponent 
+                            lat={latitudeCoordinate} 
+                            lon={longitudeCoordinate} 
+                            temperature={formatTemperature(weatherData.current.temp)}
+                            location={city}
+                            iconCode={weatherData.current.weather[0].icon}
+                        />
+                    ) : ( <p>Loading...</p> )}
                 </div>
             </div>
         </div>
