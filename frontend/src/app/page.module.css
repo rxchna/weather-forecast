@@ -65,7 +65,8 @@
     display: grid;
     grid-template-columns: minmax(23.5em, 25%) auto;
     grid-template-rows: 28em 2em auto;
-    gap: 2.5em;
+    column-gap: 2.5em;
+    row-gap: 2.5em;
 }
 
 .current_location {
@@ -81,7 +82,6 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 0.8em 70% auto;
     column-gap: 1.3em;
-    /* row-gap: ; */
     padding: 1em 1.8em;
 }
 
@@ -103,14 +103,18 @@
     padding-right: 10px;
 }
 
-.map_section {
-    padding: 1em;
+.map_container {
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(210deg) saturate(0.3) brightness(0.7);
 }
 
 .forecast_six_days, .map_section {
     margin-top: -1.8em;
 }
-.current_location, .meteorological_data_points, .forecast_six_days, .map_section {
+.current_location, .meteorological_data_points, .forecast_six_days {
     border-radius: 1.5em;
     background: radial-gradient(ellipse, #4b82948a, #182028);
 }
@@ -127,7 +131,7 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 20% auto;
     align-items: center;
-    row-gap: 0.3em;
+    /* row-gap: 0.3em; */
 }
 
 .uv_index_datapoint {
@@ -138,7 +142,7 @@
 }
 .wind_data_point, .uv_index_datapoint, .sunrise_sunset_data_point {
     margin-bottom: 0.7em;
-    margin-top: 1em;
+    margin-top: 0.5em;
     padding: 1em 1.5em;
     border-radius: 1em;
 }
@@ -255,5 +259,33 @@
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.6em;
     letter-spacing: 0;
-    margin-bottom: 0.1em;
+}
+
+.custom_marker_div {
+    background: radial-gradient(ellipse, #49B6CC, #49b6cca9, #49b6cc5a, #49b6cc26, transparent, transparent, transparent, transparent);
+    width: 30em;
+    height: 20em;
+    margin-top: -100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom_marker_div img {
+    height: 10em;
+    width: auto;
+    margin-bottom: 0.5em;
+}
+
+.custom_marker_div div:first-of-type {
+    color: #e4e4e4;
+    font-size: 1.2em;
+    margin-bottom: -1.4em;
+    letter-spacing: 1px;
+}
+
+.custom_marker_div div:nth-of-type(2) {
+    font-size: 2em;
+    margin-top: -1em;
 }
