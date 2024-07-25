@@ -131,12 +131,32 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 20% auto;
     align-items: center;
-    /* row-gap: 0.3em; */
 }
 
 .uv_index_datapoint {
     background-color: rgb(16, 22, 29, 0.8);
 }
+.uv_chart {
+    grid-column: 1 / span 2;
+    margin-top: -1em;
+}
+.sunset_sunrise_chart {
+    /* margin-top: -0.5em; */
+}
+
+.uv_data_value {
+    margin-top: -2.5em !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.2em; 
+    align-items: flex-end;
+}
+
+.uv_index_datapoint .datapoint_unit {
+    margin-bottom: 0.2em;
+}
+
 .sunrise_sunset_data_point {
     background-color: rgb(16, 22, 29, 0.8);
 }
@@ -242,7 +262,7 @@
     width: 4.5em;
     margin-top: 0.5em;
 }
-.wind_data_point h1 {
+.wind_data_point h1, .uv_index_datapoint h1 {
     justify-self: end;
     font-weight: 400;
     letter-spacing: 1px;
@@ -254,7 +274,7 @@
     width: 100%;
     max-width: 100%;
 }
-.wind_unit {
+.datapoint_unit {
     font-size: 0.7em;
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.6em;
@@ -288,4 +308,88 @@
 .custom_marker_div div:nth-of-type(2) {
     font-size: 2em;
     margin-top: -1em;
+}
+
+.doughnut_container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.doughnut_scale {
+    position: absolute;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+}
+
+.doughnut_container canvas {
+    width: 100% !important;
+    height: 160% !important;
+    margin-top: -5em;
+}
+
+.uvi_doughnut {
+    padding: 1em;
+}
+
+.sun_doughnut_container {
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 75%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70% auto;
+    align-items: center;
+    justify-items: center;
+    margin: auto;
+}
+
+.sun_doughnut_container hr {
+    width: 120%;
+    margin-top: -5.5em;
+    /* color: #ccc; */
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.sun_doughnut {
+    /* margin-top: -2em; */
+}
+
+.doughnut_sunrise_sunset_data {
+    margin-top: -6em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 120%;
+}
+.doughnut_sunrise_sunset_data div:first-of-type {
+    justify-self: start;
+}
+.doughnut_sunrise_sunset_data div:last-of-type {
+    justify-self: end;
+}
+.sun_time_title {
+    color: #FFC62E;
+}
+.sun_desc_container {
+    font-size: 0.8em;
+    align-self: start;
+    color: #ccc;
+    letter-spacing: 1px;
+    line-height: 150%;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.doughnut_sunrise_sunset_data div:first-of-type div {
+    justify-self: center;
+}
+.doughnut_sunrise_sunset_data div:last-of-type div {
+    justify-self: center;
+}
+.sunrise_set_icon {
+    justify-self: center;
+    color: #777978;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Line } from 'react-chartjs-2';
-import { WindEntry, WindGraphProps } from '@/types/windData';
+import { WindGraphProps } from '@/types/windData';
 import { 
     Chart as ChartJS, 
     CategoryScale, 
