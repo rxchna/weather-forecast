@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React from 'react';
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
@@ -18,7 +17,9 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import StormIcon from '@mui/icons-material/Storm';
-import WindGraph from '../components/WindGraph/index';
+import WindGraphComponent from '../components/WindGraphComponent/index';
+import UVChartComponent from '../components/UVChartComponent/index';
+import SunChartComponent from '../components/SunChartComponent/index';
 import MapComponent from "@/components/MapComponent";
 
 export default function Home() {
@@ -364,19 +365,45 @@ export default function Home() {
                             {weatherData?.current?.wind_speed && (
                                 weatherData.current.wind_speed
                             )}
-                            <span className={styles.wind_unit}> m/s</span>
+                            <span className={styles.datapoint_unit}> m/s</span>
                         </h1>
                         <div className={styles.wind_graph}>
                             {forecastWindData && 
-                                <WindGraph windData={forecastWindData} />
+                                <WindGraphComponent windData={forecastWindData} />
                             }
                         </div>
                     </div>
                     <div className={styles.uv_index_datapoint}>
-                        UV Index
+                        {/* UVI Chart */}
+                        <div>UV Index</div>
+                        {/* <h1>
+                            {weatherData?.current?.uvi && (
+                                weatherData.current.uvi
+                            )}
+                            <span className={styles.datapoint_unit}> uv</span>
+                        </h1> */}
+                        <div className={styles.uv_chart}>
+                            <UVChartComponent uvi={weatherData?.current?.uvi} />
+                        </div>
+                        <h1 className={styles.uv_data_value}>
+                            {weatherData?.current?.uvi && (
+                                weatherData.current.uvi
+                            )}
+                            <span className={styles.datapoint_unit}> uv</span>
+                        </h1>
                     </div>
                     <div className={styles.sunrise_sunset_data_point}>
-                        Sunrise & Sunset
+                        {/* Sunrise-Sunset Chart */}
+                        <div>Sunrise & Sunset</div>
+                        <div className={styles.sunset_sunrise_chart}>
+                            {weatherData?.current?.sunrise && weatherData?.current?.sunset &&
+                                <SunChartComponent
+                                    sunrise={weatherData?.current?.sunrise} 
+                                    sunset={weatherData?.current?.sunset}
+                                    current_time={currentTime}
+                                />
+                            }
+                        </div>
                     </div>
                     {/* Humidity DataPoint */}
                     <div className={styles.humidity_data_point}>
