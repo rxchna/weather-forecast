@@ -16,6 +16,7 @@ A weather application that provides weather information based on the user's loca
 1) Obtain an API key from OpenWeatherMap.
 2) Rename .variables.env.tmp to .variables.env 
 > OPENWEATHER_API_KEY=\<your-api-key\>
+3) cd backend
 4) npm install
 
 ## Set up frontend
@@ -23,7 +24,8 @@ A weather application that provides weather information based on the user's loca
 2) npm install
 
 ## start server
-1) npm start
+1) cd backend
+2) npm start
 
 ## start react app
 1) cd frontend

@@ -1,2 +1,15 @@
-node_modules/
-.variables.env
+backend/node_modules/
+backend/.variables.env
+
+frontend/node_modules/
+frontend/.next/
+# debug
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+.DS_Store
+
+# typescript
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts

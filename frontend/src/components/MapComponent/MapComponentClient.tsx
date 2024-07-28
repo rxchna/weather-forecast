@@ -88,7 +88,8 @@ const MapComponentClient: React.FC<MapComponentClientProps> = ({ lat, lon, tempe
             className={styles.map_container}
             key={`${lat}-${lon}`}>
             <TileLayer
-                url={`https://tiles-eu.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png`}
+                // url={`https://tiles-eu.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png`}
+                url={`https://api.mapbox.com/styles/v1/rxchna/clys5l1tn002001p97u3k6642/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicnhjaG5hIiwiYSI6ImNseXM1M2J6ODBkdDAyanE3bzl0b28yZG8ifQ.S6O5secIVW2DLcZkHrol9w`}
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <Marker position={[lat, lon]} icon={customMarker}>
