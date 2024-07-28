@@ -2,15 +2,9 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import styles from '../../app/page.module.css';
-
-interface MapComponentClientProps {
-    lat: number;
-    lon: number;
-    temperature: string;
-    location: string;
-    iconCode: string;
-}
+import styles from '../../../public/assets/styles/page.module.css';
+import { MapComponentProps } from '@/types/mapData';
+import { capitalizeString } from "@/utils/formatDataUtilityFunctions";
 
 // Function to display custom icon
 const customAmChartsAnimatedIcon = (iconCode: string) => {
@@ -66,17 +60,17 @@ const createCustomMarker = (temperature: string, location: string, iconUrl: stri
         className: `${styles.custom_marker}`,
         html: `
             <div class="${styles.custom_marker_div}">
-                <div>${location}</div>
+                <div>${capitalizeString(location)}</div> 
                 <img src="${iconUrl}" alt="Weather icon"/>
                 <div>${temperature}</div>
             </div>`,
-        iconSize: [100, 60]
+        iconSize: [100, 60] // todo: location bug: changes on search bar input
     });
 
     return markerDiv;
 };
 
-const MapComponentClient: React.FC<MapComponentClientProps> = ({ lat, lon, temperature, location, iconCode }) => {
+const MapComponentClient: React.FC<MapComponentProps> = ({ lat, lon, temperature, location, iconCode }) => {
 
     const iconUrl = customAmChartsAnimatedIcon(iconCode);
     const customMarker = createCustomMarker(temperature, location, iconUrl);

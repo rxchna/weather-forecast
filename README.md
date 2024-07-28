@@ -2,6 +2,8 @@
 ## Project Overview :
 A weather application that provides weather information based on the user's location input. The application fetches meteorological data points and a five-day forecast from the [OpenWeatherMap API](https://openweathermap.org/).
 
+![Weather Forecast UI](ui.png)
+
 ## App Features :
 1) Location Input: Users can enter a city name to fetch weather data.
 2) Current Weather: Displays current weather conditions including temperature, humidity, wind speed, and weather description.
