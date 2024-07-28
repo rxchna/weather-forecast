@@ -1,6 +1,6 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import styles from '../../app/page.module.css';
+import styles from '../../../public/assets/styles/page.module.css';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -9,16 +9,13 @@ import {
     ChartOptions,
     ChartData
 } from 'chart.js';
+import { UVEntryProps } from '@/types/uviData';
 
 ChartJS.register(
     ArcElement,
     Tooltip,
     Legend
 );
-
-export interface UVEntryProps {
-    uvi: number;
-}
 
 const UVChart: React.FC<UVEntryProps> = ({ uvi }) => {
     const UVChartData: ChartData<'doughnut'> = {

@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
-import styles from "./page.module.css";
+import styles from "../../public/assets/styles/page.module.css";
+
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_BASE_URL } from "@/config/serverApiConfig";
@@ -21,6 +22,9 @@ import WindGraphComponent from '../components/WindGraphComponent/index';
 import UVChartComponent from '../components/UVChartComponent/index';
 import SunChartComponent from '../components/SunChartComponent/index';
 import MapComponent from "@/components/MapComponent";
+import OpenWeatherIconComponent from "@/components/OpenWeatherIconComponent";
+import { formatTemperature, formatForecastMaxTemp, formatForecastMinTemp, formatForecastDate, formatDewPoint, formatVisbilityKm, formatCurrentTime, capitalizeString } from "@/utils/formatDataUtilityFunctions";
+import { addVisibilityInfo, addPressureInfo, addDewPointInfo } from "@/utils/additionalWeatherInformation";
 
 export default function Home() {
 
@@ -35,11 +39,6 @@ export default function Home() {
 
     const weatherIconSize4x = "4x";
     const weatherIconSize2x = "2x";
-
-    interface WeatherIconProps {
-        iconCode: string;
-        iconSize?: string;
-    }
 
     const getLatLonCoordinates = async () => {
         // Call API to fetch location latitude/longitude coordinates
@@ -150,46 +149,6 @@ export default function Home() {
         }
     };
 
-    // Function to convert temperature to 1dp and add Celcius symbol
-    const formatTemperature = (temp: any) => {
-        return `${temp.toFixed(1)}\u00B0C`;
-    };
-
-    // Function to display forecast temperature as max string
-    const formatForecastMaxTemp = (maxTemp: any) => {
-        return `${maxTemp.toFixed(1)}\u00B0/`;
-    };
-    // Function to display forecast temperature as min string
-    const formatForecastMinTemp = (minTemp: any) => {
-        return `${Math.floor(minTemp)}\u00B0`;
-    };
-
-    // Function to format date on forecast section
-    const formatForecastDate = (dateTimeString: any) => {
-        const date = new Date(`${dateTimeString}T00:00:00`); // date-fns library to handle date data parsing
-    
-        // Get month and day
-        const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
-        const day = date.getDate();
-
-        // Get day of the week
-        const dayOfWeek = new Intl.DateTimeFormat('en', { weekday: 'short' }).format(date);
-
-        // Format the output
-        const formattedDate = `${month} ${day < 10 ? '0' + day : day}`;
-        const formattedDayOfWeek = dayOfWeek;
-
-        return {
-            formattedDate,
-            formattedDayOfWeek
-        };
-    }
-
-    // Function to round dewpoint add Celcius symbol
-    const formatDewPoint = (val: any) => {
-        return `${Math.round(val)}\u00B0`;
-    };
-
     // Initial render of component
     useEffect(() => {
         getLatLonCoordinates();
@@ -206,16 +165,7 @@ export default function Home() {
         // Retrieve wind daily forecast data
         getForecastWindData();
 
-        // Initialize map component
-        // todo
-
     }, [latitudeCoordinate, longitudeCoordinate]);
-
-    // Function to retrieve weather icon using OpenWeather icons
-    const WeatherIcon: React.FC<WeatherIconProps> = ({ iconCode, iconSize }) => {
-        const iconUrl = `http://openweathermap.org/img/wn/${iconCode}${iconSize ? `@${iconSize}` : ''}.png`;
-        return <img src={iconUrl} alt="Weather icon" />;
-    };
 
     // Function to display custom icon
     const customIcon = (iconCode: string) => {
@@ -265,49 +215,6 @@ export default function Home() {
         return iconComponent;
     };
 
-    // Function to return capitalized string
-    const capitalizeString = (str: string) => {
-        return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-    };
-
-    // Function to return visibility in km
-    const formatVisbilityKm = (meters: number) => {
-        return meters / 1000;
-    };
-
-    // Function to return additional information about current visibility
-    const addVisibilityInfo = (visibility: number) => {
-        if (visibility >= 6000) {
-            return "Good visibility under clear conditions";
-        } else if (visibility < 4000) {
-            return "Haze is affecting visibility";
-        } else {
-            return "Moderate visibility due to haze or light fog";
-        }
-    };
-
-    // Function to return additional information about current value for pressure
-    const addPressureInfo = (pressure: number) => {
-        if (pressure > 1014) {
-            return "High pressure, stable weather conditions";
-        } else if (pressure < 1000) {
-            return "Unsettled weather and possible precipitation";
-        } else {
-            return "Normal atmospheric pressure";
-        }
-    };
-
-    // Get formatted current time
-    const currentTime = new Date().toLocaleTimeString([], {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    }).replace(' at', '');
-
     return (
         <div className={styles.body_div}>
             <div className={styles.body_header}>
@@ -330,7 +237,7 @@ export default function Home() {
                 <div className={styles.current_location}>
                     <div className={styles.weather_icon}>
                         {weatherData?.current.weather[0]?.icon && (
-                            <WeatherIcon iconCode={weatherData.current.weather[0].icon} iconSize={weatherIconSize4x} />
+                            <OpenWeatherIconComponent iconCode={weatherData.current.weather[0].icon} iconSize={weatherIconSize4x} />
                         )}
                     </div>
                     <h1 className={styles.temperature_style}>
@@ -350,7 +257,7 @@ export default function Home() {
                     </div>
                     <hr />
                     <CalendarMonthOutlinedIcon />
-                    <div>{currentTime}</div>
+                    <div>{formatCurrentTime}</div>
                     <DeviceThermostatSharpIcon />
                     <div>Feels Like {weatherData?.current?.feels_like && (
                         formatTemperature(weatherData.current.feels_like)
@@ -376,12 +283,6 @@ export default function Home() {
                     <div className={styles.uv_index_datapoint}>
                         {/* UVI Chart */}
                         <div>UV Index</div>
-                        {/* <h1>
-                            {weatherData?.current?.uvi && (
-                                weatherData.current.uvi
-                            )}
-                            <span className={styles.datapoint_unit}> uv</span>
-                        </h1> */}
                         <div className={styles.uv_chart}>
                             <UVChartComponent uvi={weatherData?.current?.uvi} />
                         </div>
@@ -400,7 +301,7 @@ export default function Home() {
                                 <SunChartComponent
                                     sunrise={weatherData?.current?.sunrise} 
                                     sunset={weatherData?.current?.sunset}
-                                    current_time={currentTime}
+                                    current_time={formatCurrentTime}
                                 />
                             }
                         </div>
@@ -419,7 +320,9 @@ export default function Home() {
                             <WaterDropTwoToneIcon />
                         </div>
                         <div className={styles.secondary_dp_add_desc}>
-                            The dew point is {weatherData?.current?.dew_point && (formatDewPoint(weatherData.current.dew_point))} right now
+                            {weatherData?.current?.dew_point && (
+                                addDewPointInfo(formatDewPoint(weatherData.current.dew_point))
+                            )}
                         </div>
                     </div>
                     {/* Visibility DataPoint */}
@@ -469,7 +372,7 @@ export default function Home() {
                         <React.Fragment key={index}>
                             <div className={styles.forecast_icon}>
                                 {forecast?.icon && (
-                                    <WeatherIcon iconCode={forecast.icon} iconSize={weatherIconSize2x} />
+                                    <OpenWeatherIconComponent iconCode={forecast.icon} iconSize={weatherIconSize2x} />
                                 )}
                             </div>
                             <div className={styles.forecast_temp}>

@@ -8,7 +8,6 @@ require('dotenv').config({ path: '.variables.env' });
 const app = express();
 
 // env variables
-const WEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const PORT_NO = process.env.PORT;
 
 app.listen(PORT_NO, () => {

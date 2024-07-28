@@ -1,7 +1,8 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import styles from '../../app/page.module.css';
+import styles from '../../../public/assets/styles/page.module.css';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
+import { SunDataEntryProps } from '@/types/sunData';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -16,12 +17,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-export interface SunDataEntryProps {
-    sunrise: number;
-    sunset: number;
-    current_time: string;
-}
 
 // Function to calculate current position of the sun relative to sunrise and sunset
 const getCurrentPosition = (current_time: string, sunrise: number, sunset: number) => { 
