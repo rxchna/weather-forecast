@@ -17,20 +17,21 @@ A weather application that provides weather information based on the user's loca
 ## Set up backend
 1) Obtain an API key from [OpenWeatherMap](https://openweathermap.org/)
 2) Obtain an API key from [GeoDBCities](https://rapidapi.com/wirefreethought/api/geodb-cities)
-2) Rename .variables.env.tmp to .variables.env 
+3) Rename .variables.env.tmp to .variables.env 
 > OPENWEATHER_API_KEY=\<your-OpenWeather-API-key\>
+
 > GEO_API_KEY=\<your-GEO-API-key\>
-3) cd backend
-4) npm install
+4) cd backend
+5) npm install
 
 ## Set up frontend
 1) cd frontend
 2) npm install
 
-## start server
+## Start server
 1) cd backend
 2) npm start
 
-## start react app
+## Start react app
 1) cd frontend
 2) npm run dev
