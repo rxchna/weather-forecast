@@ -12,7 +12,7 @@
 
 .body_header {
     display: grid;
-    grid-template-columns: 75% auto;
+    grid-template-columns: 40% 30% auto;
     align-items: center;
     margin-bottom: 2em;
 }

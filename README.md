@@ -15,9 +15,11 @@ A weather application that provides weather information based on the user's loca
 3) Styling: CSS for styling components and ensuring a visually appealing layout.
 
 ## Set up backend
-1) Obtain an API key from OpenWeatherMap.
+1) Obtain an API key from [OpenWeatherMap](https://openweathermap.org/)
+2) Obtain an API key from [GeoDBCities](https://rapidapi.com/wirefreethought/api/geodb-cities)
 2) Rename .variables.env.tmp to .variables.env 
-> OPENWEATHER_API_KEY=\<your-api-key\>
+> OPENWEATHER_API_KEY=\<your-OpenWeather-API-key\>
+> GEO_API_KEY=\<your-GEO-API-key\>
 3) cd backend
 4) npm install
 

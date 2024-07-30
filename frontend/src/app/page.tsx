@@ -18,13 +18,14 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import DeviceThermostatSharpIcon from '@mui/icons-material/DeviceThermostatSharp';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import StormIcon from '@mui/icons-material/Storm';
-import WindGraphComponent from '../components/WindGraphComponent/index';
-import UVChartComponent from '../components/UVChartComponent/index';
-import SunChartComponent from '../components/SunChartComponent/index';
+import WindGraphComponent from '@/components/WindGraphComponent/index';
+import UVChartComponent from '@/components/UVChartComponent/index';
+import SunChartComponent from '@/components/SunChartComponent/index';
 import MapComponent from "@/components/MapComponent";
 import OpenWeatherIconComponent from "@/components/OpenWeatherIconComponent";
 import { formatTemperature, formatForecastMaxTemp, formatForecastMinTemp, formatForecastDate, formatDewPoint, formatVisbilityKm, formatCurrentTime, capitalizeString } from "@/utils/formatDataUtilityFunctions";
 import { addVisibilityInfo, addPressureInfo, addDewPointInfo } from "@/utils/additionalWeatherInformation";
+import SearchBarComponent from '@/components/SearchBarComponent';
 
 export default function Home() {
 
@@ -231,6 +232,9 @@ export default function Home() {
                     <button onClick={() => {
                         getLatLonCoordinates();
                     }}><SearchIcon className={styles.search_icon}/></button>
+                </div>
+                <div>
+                    <SearchBarComponent />
                 </div>
             </div>
             <div className={styles.main_weather_data}>
