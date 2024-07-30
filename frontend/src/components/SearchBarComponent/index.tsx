@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AsyncPaginate } from "react-select-async-paginate";
 import axios from 'axios';
 import { API_BASE_URL } from '@/config/serverApiConfig';
 
 const SearchBarComponent = () => {
     const [location, setLocation] = useState(null);
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     // Method to call endpoint to retrieve city names based on prefixes
     const getCityData = async (searchPrefix: any) => {
@@ -46,6 +51,9 @@ const SearchBarComponent = () => {
             return { options: [] };
         }
     };
+
+    // Render nothing until mounted on the client
+    if (!isClient) return null;
 
     return (
         <AsyncPaginate
