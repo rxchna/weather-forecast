@@ -22,9 +22,11 @@ const coordinatesController = require("./controllers/coordinatesController");
 const getWeatherDataController = require("./controllers/getWeatherDataController");
 const getForecastWeatherDataController = require("./controllers/getForecastedWeatherDataController");
 const getWindForecastData = require("./controllers/getWindForecastDataController");
+const searchCityController = require("./controllers/searchCityController");
 
 // Endpoints
 app.get('/api/locationLatLonCoordinates', coordinatesController);
 app.get('/api/weather', getWeatherDataController);
 app.get('/api/forecastWeather', getForecastWeatherDataController);
 app.get('/api/forecastWindDatapoint', getWindForecastData);
+app.get('/api/searchCity', searchCityController);
