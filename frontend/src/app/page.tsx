@@ -54,7 +54,7 @@ export default function Home() {
 
                 if(response) {
                     const {lon, lat, name, country} = response.data[0];
-                    setLocation(`${name}, ${country}`); // Feature todo: auto suggest from seach bar
+                    setLocation(`${name}, ${country}`);
 
                     // Set coordinates state
                     setLongitudeCoordinate(lon);
@@ -150,6 +150,18 @@ export default function Home() {
         }
     };
 
+    // Function to update location, latitude & longitude coordinates
+    const updateLocation = (loc: any) => {
+        // Set City
+        let parts = loc.label.split(", ")
+        setCity(parts[0]);
+        setLocation(loc.label);
+
+        // Set latitudeLongitude corrdinates
+        setLatitudeCoordinate(loc.latitude);
+        setLongitudeCoordinate(loc.longitude)
+    }
+
     // Initial render of component
     useEffect(() => {
         getLatLonCoordinates();
@@ -234,7 +246,7 @@ export default function Home() {
                     }}><SearchIcon className={styles.search_icon}/></button>
                 </div>
                 <div>
-                    <SearchBarComponent />
+                    <SearchBarComponent updateLocation={updateLocation} />
                 </div>
             </div>
             <div className={styles.main_weather_data}>

@@ -61,6 +61,70 @@
     margin-bottom: -0.2em;
 }
 
+.search_bar_component {
+    border-radius: 1em;
+    background-color: #1E1E1E;
+    border: none;
+    width: 100%;
+    color: red; /* background should be black remove this then */
+}
+
+/* Control styles for AsyncPaginate input */
+.search_bar_component .async_paginate__control {
+    border: none;
+    background-color: #1E1E1E;
+    border-radius: 1em;
+    width: 100%;
+    padding: 0.8em 1.1em;
+    color: teal;
+}
+
+/* Input styles inside AsyncPaginate */
+.search_bar_component .async_paginate__input-container {
+    padding: 0;
+}
+
+.search_bar_component .async_paginate__input {
+    color: goldenrod;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+}
+
+/* Placeholder styling */
+.search_bar_component .async_paginate__placeholder {
+    color: gray;
+}
+
+/* Menu styles for dropdown list */
+.search_bar_component .async_paginate__menu {
+    border-radius: 1em;
+    background-color: #1E1E1E;
+    color: white;
+    z-index: 1000; /* Ensure dropdown is on top */
+}
+
+/* Menu list styles */
+.search_bar_component .async_paginate__menu-list {
+    padding: 0;
+}
+
+/* Option styles in dropdown list */
+.search_bar_component .async_paginate__option {
+    background-color: #1E1E1E;
+    color: white;
+    padding: 0.8em 1.1em;
+}
+
+/* Selected option styles */
+.search_bar_component .async_paginate__option--is-selected {
+    background-color: #333;
+}
+
+
+
+
+
 .main_weather_data {
     display: grid;
     grid-template-columns: minmax(23.5em, 25%) auto;
