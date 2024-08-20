@@ -155,7 +155,8 @@ export default function Home() {
         // Set City
         let parts = loc.label.split(", ")
         setCity(parts[0]);
-        setLocation(loc.label);
+        setCountryCode(loc.countryCode);
+        setLocation(`${parts[0]}, ${loc.countryCode}`);
 
         // Set latitudeLongitude corrdinates
         setLatitudeCoordinate(loc.latitude);
@@ -239,12 +240,6 @@ export default function Home() {
                         </div>
                     )}
                 </h1>
-                <div className={styles.search_bar}>
-                    <input type="search" placeholder="eg. Toronto, CA" onChange={(e) => updatePlace(e)}/>
-                    <button onClick={() => {
-                        getLatLonCoordinates();
-                    }}><SearchIcon className={styles.search_icon}/></button>
-                </div>
                 <div>
                     <SearchBarComponent updateLocation={updateLocation} />
                 </div>
