@@ -5,14 +5,14 @@ A weather application that provides weather information based on the user's loca
 ![Weather Forecast UI](ui.png)
 
 ## App Features :
-1) Location Input: Users can enter a city name to fetch weather data.
+1) Location Input: Users can search a city to fetch weather data.
 2) Current Weather: Displays current weather conditions including temperature, humidity, wind speed, and weather description.
 3) Five-Day Forecast: Provides a forecast for the next five days, temperature highs and lows, and weather conditions.
 
 ## Technologies Used:
 1) Frontend: React.js / Next.js
-2) Backend: Node.js/Express.js to handle API requests and interact with OpenWeatherMap API.
-3) Styling: CSS for styling components and ensuring a visually appealing layout.
+2) Backend: Node.js/Express.js to handle API requests and interact with OpenWeatherMap API & GeoAPI
+4) Styling: CSS for styling components and ensuring a visually appealing layout.
 
 ## Set up backend
 1) Obtain an API key from [OpenWeatherMap](https://openweathermap.org/)
